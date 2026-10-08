@@ -3,9 +3,11 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
 page = "https://quotes.toscrape.com/"
+quotes_list = []
 
 while True:
     response = requests.get(page)
+    response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -22,10 +24,13 @@ while True:
 
         tags = [tag.get_text(strip=True) for tag in quote.select(".tag")]
 
-        print(text)
-        print(f"{author} - {author_link}")
-        print(tags)
-        print("-" * 50)
+        quote1 = {
+            "text": text,
+            "author": author,
+            "author_link": author_link,
+            "tags": tags
+        }
+        quotes_list.append(quote1)
 
     next_page = soup.select_one("ul.pager li.next a")
 
@@ -34,3 +39,5 @@ while True:
 
     else:
         break
+
+print(quotes_list)
