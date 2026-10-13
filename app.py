@@ -11,10 +11,12 @@ while True:
 
     soup = BeautifulSoup(response.text, "html.parser")
 
+    # Here we mention the CSS class selectors in order to get access over certain HTML scope.
     quotes = soup.select(".quote")
 
     for quote in quotes:
 
+        # Here we mention the CSS class selectors in order to get access over certain HTML scope.
         text = quote.select_one(".text").get_text(strip=True)
 
         author = quote.select_one(".author").get_text(strip=True)
@@ -24,13 +26,13 @@ while True:
 
         tags = [tag.get_text(strip=True) for tag in quote.select(".tag")]
 
-        quote1 = {
+        quote_to_append = {
             "text": text,
             "author": author,
             "author_link": author_link,
             "tags": tags
         }
-        quotes_list.append(quote1)
+        quotes_list.append(quote_to_append)
 
     next_page = soup.select_one("ul.pager li.next a")
 
